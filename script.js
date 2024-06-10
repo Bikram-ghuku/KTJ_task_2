@@ -1,19 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
-    var cells = []
     const turnIndicator = document.getElementById('turn-indicator');
     const resetButton = document.getElementById('reset-button');
     const gameBoardHTM = document.getElementById('game-board');
     const gridSizeEle = document.getElementById('grid-size-sel');
-    for(var i = 4; i < 10; i++){
-        var ele = document.createElement("OPTION")
-        ele.value = `${i}`
-        ele.innerHTML = `${i}x${i}`
-        gridSizeEle.appendChild(ele)
+
+    for (let i = 4; i <= 9; i++) {
+        const ele = document.createElement('OPTION');
+        ele.value = `${i}`;
+        ele.innerHTML = `${i}x${i}`;
+        gridSizeEle.appendChild(ele);
     }
-    var n = 3
+
+    let n = 3;
     let currentPlayer = 'X';
     let gameBoard = Array(n).fill(null).map(() => Array(n).fill(''));
     let gameActive = true;
+    let cells = [];
 
     const handleCellClick = (event) => {
         const clickedCell = event.target;
@@ -27,8 +29,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         gameBoard[rowIndex][colIndex] = currentPlayer;
         clickedCell.innerHTML = currentPlayer;
-        
+
         checkResult();
+
+        if (gameActive) {
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            turnIndicator.innerHTML = `Player ${currentPlayer}'s turn`;
+        }
     };
 
     const checkResult = () => {
@@ -43,12 +50,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const draw = gameBoard.flat().every(cell => cell !== '');
         if (draw) {
             turnIndicator.innerHTML = 'Draw!';
+            gameActive = false;
             setTimeout(resetBoard, 5000);
             return;
         }
-
-        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-        turnIndicator.innerHTML = `Player ${currentPlayer}'s turn`;
     };
 
     const checkWinConditions = () => {
@@ -66,25 +71,29 @@ document.addEventListener('DOMContentLoaded', () => {
         gameActive = true;
         currentPlayer = 'X';
         turnIndicator.innerHTML = `Player X's turn`;
-        loadGame();
         gameBoard = Array(n).fill(null).map(() => Array(n).fill(''));
+        loadGame();
     };
 
-    const loadGame  = () => {
-        gameBoardHTM.innerHTML = ''
-        n = gridSizeEle.value
-        for(var i = 0; i < n * n; i++){
-            var newDiv = document.createElement("div");
-            newDiv.classList.add("cell");
-            newDiv.setAttribute("data-index", `${i}`);
-            newDiv.onclick = handleCellClick;
-            cells.push(newDiv)
+    const loadGame = () => {
+        gameBoardHTM.innerHTML = '';
+        cells = [];
+        n = parseInt(gridSizeEle.value);
+
+        for (let i = 0; i < n * n; i++) {
+            const newDiv = document.createElement('div');
+            newDiv.classList.add('cell');
+            newDiv.setAttribute('data-index', `${i}`);
+            newDiv.addEventListener('click', handleCellClick);
+            cells.push(newDiv);
             gameBoardHTM.appendChild(newDiv);
         }
-        gameBoardHTM.style.gridTemplateColumns = `repeat(${n}, 100px)`
-        gameBoardHTM.style.gridTemplateRows = `repeat(${n}, 100px)`
-    }
-    gridSizeEle.onclick = loadGame
-    loadGame()
+
+        gameBoardHTM.style.gridTemplateColumns = `repeat(${n}, 100px)`;
+        gameBoardHTM.style.gridTemplateRows = `repeat(${n}, 100px)`;
+    };
+
+    gridSizeEle.addEventListener('change', loadGame);
+    loadGame();
     resetButton.addEventListener('click', resetBoard);
 });
