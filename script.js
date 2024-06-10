@@ -3,42 +3,68 @@ document.addEventListener('DOMContentLoaded', () => {
     const turnIndicator = document.getElementById('turn-indicator');
     const resetButton = document.getElementById('reset-button');
     const gameBoardHTM = document.getElementById('game-board');
-    const n = 3
+    const n = 5
     let currentPlayer = 'X';
-    let gameBoard = ['', '', '', '', '', '', '', '', ''];
+    let gameBoard = Array(n).fill(null).map(() => Array(n).fill(''));
     let gameActive = true;
-
 
     const handleCellClick = (event) => {
         const clickedCell = event.target;
         const clickedCellIndex = parseInt(clickedCell.getAttribute('data-index'));
+        const rowIndex = Math.floor(clickedCellIndex / n);
+        const colIndex = clickedCellIndex % n;
 
-        if (gameBoard[clickedCellIndex] !== '' || !gameActive) {
+        if (gameBoard[rowIndex][colIndex] !== '' || !gameActive) {
             return;
         }
 
-        gameBoard[clickedCellIndex] = currentPlayer;
+        gameBoard[rowIndex][colIndex] = currentPlayer;
         clickedCell.innerHTML = currentPlayer;
-
+        
         checkResult();
     };
 
     const checkResult = () => {
-        let roundWon = false;
+        const win = checkWinConditions();
+        if (win) {
+            turnIndicator.innerHTML = `Player ${currentPlayer} wins!`;
+            gameActive = false;
+            setTimeout(resetBoard, 5000);
+            return;
+        }
+
+        const draw = gameBoard.flat().every(cell => cell !== '');
+        if (draw) {
+            turnIndicator.innerHTML = 'Draw!';
+            setTimeout(resetBoard, 5000);
+            return;
+        }
 
         currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
         turnIndicator.innerHTML = `Player ${currentPlayer}'s turn`;
     };
 
+    const checkWinConditions = () => {
+        for (let i = 0; i < n; i++) {
+            if (gameBoard[i].every(cell => cell === currentPlayer)) return true;
+            if (gameBoard.every(row => row[i] === currentPlayer)) return true;
+        }
+        if (gameBoard.every((row, idx) => row[idx] === currentPlayer)) return true;
+        if (gameBoard.every((row, idx) => row[n - idx - 1] === currentPlayer)) return true;
+
+        return false;
+    };
+
     const resetBoard = () => {
-        gameBoard = ['', '', '', '', '', '', '', '', ''];
         gameActive = true;
         currentPlayer = 'X';
         turnIndicator.innerHTML = `Player X's turn`;
-        cells.forEach(cell => cell.innerHTML = '');
+        loadGame();
+        gameBoard = Array(n).fill(null).map(() => Array(n).fill(''));
     };
 
     const loadGame  = () => {
+        gameBoardHTM.innerHTML = ''
         for(var i = 0; i < n * n; i++){
             var newDiv = document.createElement("div");
             newDiv.classList.add("cell");
