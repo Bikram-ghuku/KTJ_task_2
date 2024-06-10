@@ -9,16 +9,16 @@
 <body>
     <div class="container">
         <h1>Tic Tac Toe</h1>
-        <div class="grid-sel">
+        <div class="game-info">
+            <h2 id="turn-indicator">Player X's turn</h2>
+        </div>
+        <div>
+            <label for="grid-size-sel">Grid Size: </label>
             <select id="grid-size-sel">
                 <option value="3">3x3</option>
             </select>
         </div>
-        <div class="game-info">
-            <h2 id="turn-indicator">Player X's turn</h2>
-        </div>
-        <div class="game-board" id="game-board">
-        </div>
+        <div class="game-board" id="game-board"></div>
         <button id="reset-button">Reset Game</button>
     </div>
     <script src="script.js"></script>
