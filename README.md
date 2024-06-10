@@ -1,7 +1,7 @@
 <h3 align="center">
-	<img src="https://github.com/Bikram-ghuku/KTJ_task_2/blob/main/img/favicon.png" width="100" alt="Logo"/><br/>
+	<img src="https://github.com/Bikram-ghuku/KTJ_task_2/blob/main/favicon.png" width="100" alt="Logo"/><br/>
 	<img src="" alt="" height="30" width="0px"/>
-	Music Library
+	Tic Tac Toe
 	<img src="" alt="" height="30" width="0px"/>
 </h3>
 
@@ -35,6 +35,7 @@
 ### ✨ Features
 
 - Responsive design
+- n x n grid
 
 ### 🔧 Building from Source
 
