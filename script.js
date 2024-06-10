@@ -36,14 +36,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (gameActive && opponentSel.value === 'computer') {
             currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
             turnIndicator.innerHTML = `Player ${currentPlayer}'s turn`;
-            setTimeout(computerMove, 500);  // Give a slight delay for the computer move
+            setTimeout(computerMove, 500);
         }
     };
 
     const computerMove = () => {
         if (!gameActive) return;
 
-        // Simple AI: pick the first available cell
         for (let i = 0; i < n; i++) {
             for (let j = 0; j < n; j++) {
                 if (gameBoard[i][j] === '') {
@@ -51,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const cellIndex = i * n + j;
                     cells[cellIndex].innerHTML = currentPlayer;
                     checkResult();
-                    currentPlayer = 'X';  // Switch back to the player
+                    currentPlayer = 'X';
                     turnIndicator.innerHTML = `Player ${currentPlayer}'s turn`;
                     return;
                 }
@@ -115,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     gridSizeEle.addEventListener('change', loadGame);
-    opponentSel.addEventListener('change', resetBoard);  // Reset the board if the opponent is changed
+    opponentSel.addEventListener('change', resetBoard);
     loadGame();
     resetButton.addEventListener('click', resetBoard);
 });
