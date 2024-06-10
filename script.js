@@ -3,7 +3,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const turnIndicator = document.getElementById('turn-indicator');
     const resetButton = document.getElementById('reset-button');
     const gameBoardHTM = document.getElementById('game-board');
-    const n = 5
+    const gridSizeEle = document.getElementById('grid-size-sel');
+    for(var i = 4; i < 10; i++){
+        var ele = document.createElement("OPTION")
+        ele.value = `${i}`
+        ele.innerHTML = `${i}x${i}`
+        gridSizeEle.appendChild(ele)
+    }
+    var n = 3
     let currentPlayer = 'X';
     let gameBoard = Array(n).fill(null).map(() => Array(n).fill(''));
     let gameActive = true;
@@ -65,6 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const loadGame  = () => {
         gameBoardHTM.innerHTML = ''
+        n = gridSizeEle.value
         for(var i = 0; i < n * n; i++){
             var newDiv = document.createElement("div");
             newDiv.classList.add("cell");
@@ -76,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
         gameBoardHTM.style.gridTemplateColumns = `repeat(${n}, 100px)`
         gameBoardHTM.style.gridTemplateRows = `repeat(${n}, 100px)`
     }
-
+    gridSizeEle.onclick = loadGame
     loadGame()
     resetButton.addEventListener('click', resetBoard);
 });
