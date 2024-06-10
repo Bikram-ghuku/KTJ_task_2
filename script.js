@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const resetButton = document.getElementById('reset-button');
     const gameBoardHTM = document.getElementById('game-board');
     const gridSizeEle = document.getElementById('grid-size-sel');
+    const opponentSel = document.getElementById('opponent-sel');
 
     for (let i = 4; i <= 9; i++) {
         const ele = document.createElement('OPTION');
@@ -32,9 +33,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
         checkResult();
 
-        if (gameActive) {
+        if (gameActive && opponentSel.value === 'computer') {
             currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
             turnIndicator.innerHTML = `Player ${currentPlayer}'s turn`;
+            setTimeout(computerMove, 500);  // Give a slight delay for the computer move
+        }
+    };
+
+    const computerMove = () => {
+        if (!gameActive) return;
+
+        // Simple AI: pick the first available cell
+        for (let i = 0; i < n; i++) {
+            for (let j = 0; j < n; j++) {
+                if (gameBoard[i][j] === '') {
+                    gameBoard[i][j] = currentPlayer;
+                    const cellIndex = i * n + j;
+                    cells[cellIndex].innerHTML = currentPlayer;
+                    checkResult();
+                    currentPlayer = 'X';  // Switch back to the player
+                    turnIndicator.innerHTML = `Player ${currentPlayer}'s turn`;
+                    return;
+                }
+            }
         }
     };
 
@@ -94,6 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     gridSizeEle.addEventListener('change', loadGame);
+    opponentSel.addEventListener('change', resetBoard);  // Reset the board if the opponent is changed
     loadGame();
     resetButton.addEventListener('click', resetBoard);
 });
