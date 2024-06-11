@@ -34,13 +34,12 @@ document.addEventListener('DOMContentLoaded', () => {
         checkResult();
 
         if (gameActive) {
-            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-            turnIndicator.innerHTML = `Player ${currentPlayer}'s turn`;
             if(opponentSel.value === 'computer'){
                 setTimeout(computerMove, 500);
             }
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            turnIndicator.innerHTML = `Player ${currentPlayer}'s turn`;
         }
-
         
     };
 
@@ -54,8 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const cellIndex = i * n + j;
                     cells[cellIndex].innerHTML = currentPlayer;
                     checkResult();
-                    currentPlayer = 'X';
-                    turnIndicator.innerHTML = `Player ${currentPlayer}'s turn`;
+                    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
                     return;
                 }
             }
