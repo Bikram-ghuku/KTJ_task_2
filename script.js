@@ -33,11 +33,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         checkResult();
 
-        if (gameActive && opponentSel.value === 'computer') {
+        if (gameActive) {
             currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
             turnIndicator.innerHTML = `Player ${currentPlayer}'s turn`;
-            setTimeout(computerMove, 500);
+            if(opponentSel.value === 'computer'){
+                setTimeout(computerMove, 500);
+            }
         }
+
+        
     };
 
     const computerMove = () => {
